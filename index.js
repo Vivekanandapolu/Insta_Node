@@ -10,5 +10,5 @@ app.use(express.json());
 app.use("/", cors(), router);
 //Listen
 app.listen(port, () => {
-  console.log(` ${port}`);
+  console.log(` Insta Node is running on :${port}`);
 });
