@@ -1,10 +1,11 @@
 //Import Modules or Paths
 import Sequelize from "sequelize";
+// const Sequelize = require("sequelize").Sequelize
 import dotenv from "dotenv";
 dotenv.config();
 //sequelize connection setup for mariadb
 const sequelize = new Sequelize(
-  process.env.DB_NAME || "Insta_DB",
+  process.env.DB_NAME || "insta_db",
   process.env.DB_USERNAME,
   process.env.DB_PASSWORD,
   {
