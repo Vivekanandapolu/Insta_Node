@@ -1,5 +1,5 @@
-import { text } from "express";
 import { DataTypes } from "sequelize";
+import Posts from "./posts.model.js";
 import sequelize from "../uitility/db.js";
 const User = sequelize.define("users", {
   id: {
@@ -20,7 +20,6 @@ const User = sequelize.define("users", {
   },
   username: {
     type: DataTypes.STRING,
-
     allowNull: false,
     required: true,
     unique: true,
@@ -36,4 +35,5 @@ const User = sequelize.define("users", {
 }, {
   timestamps: false
 });
+User.hasMany(Posts);
 export default User;

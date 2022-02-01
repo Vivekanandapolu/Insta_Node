@@ -22,7 +22,7 @@ const sequelize = new Sequelize(
 );
 // Sequelize Sync
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log(`Database & tables created!`);
   })

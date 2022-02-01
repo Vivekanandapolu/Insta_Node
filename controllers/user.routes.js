@@ -13,4 +13,9 @@ export default function userRoutes(router) {
   router.get("/api/user/update", user.updateUser);
   router.get("/api/user/destroy", user.destroyUser);
   router.get("/api/user/getall", user.getAllUsers)
+  router.get("/api/user/maxValue", user.maximum)
+  router.get("/api/user/byPk", user.getUserByPk)
+  router.get("/api/user/update", user.updateName)
+  router.get("/api/user/find", user.findOrCreate)
+  router.get("/api/user/posts/:id", user.postsByUserId);
 }

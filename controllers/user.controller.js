@@ -3,6 +3,7 @@ import httpStatusCode from "http-status-codes";
 import { isValidEmail, encryptPassword, comparePassword } from "../uitility/uitility.js";
 import { Op } from "sequelize";
 import sequelize from "../uitility/db.js";
+import Posts from "../models/posts.model.js";
 export default class UserController {
   async userSignUp(request, response) {
     try {
@@ -148,6 +149,65 @@ export default class UserController {
       console.log("hello");
       response.status(httpStatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
     }
-  }
 
+  }
+  async maximum(request, response) {
+    try {
+      let user = await User.sum("age", {
+        where: { "age": { [Op.lte]: 20 } }
+      })
+      response.send({ data: user })
+    } catch (error) {
+      response.status(httpStatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+    }
+  }
+  async getUserByPk(request, response) {
+    try {
+      let user = await User.findByPk(3);
+      return response.status(httpStatusCode.OK).send({ data: user.firstName })
+    } catch (error) {
+      response.status(httpStatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+    }
+  }
+  async updateName(request, response) {
+    try {
+      let updatedUser = await User.update({ "firstName": "upendra" }, {
+        where: {
+          "firstName": "Uppendra"
+        }
+      })
+      response.status(httpStatusCode.OK).send({ data: updatedUser })
+    } catch (error) {
+      response.status(httpStatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+    }
+  }
+  async findOrCreate(request, response) {
+    try {
+      let user = await User.findOrCreate({
+        where: {
+          'firstName': "gowthu",
+          'lastName': "",
+          'age': 13,
+          'username': "g@gmail.com",
+          "password": 'gowthu',
+          'isAdmin': false
+        }
+      })
+      response.status(httpStatusCode.OK).send({ data: user })
+    } catch (error) {
+      response.status(httpStatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+
+    }
+  }
+  async postsByUserId(request, response) {
+    try {
+      let user = await User.findOne({
+        where: { id: request.params.id },
+        include: [{ model: Posts, as: 'posts' }]
+      });
+      response.status(httpStatusCode.OK).send({ data: user })
+    } catch (error) {
+      response.status(httpStatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+    }
+  }
 }
