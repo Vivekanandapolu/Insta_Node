@@ -1,7 +1,9 @@
 //Import Modules or Paths
 import Sequelize from "sequelize";
-// const Sequelize = require("sequelize").Sequelize
 import dotenv from "dotenv";
+import fs from "fs";
+import UserModel from "../src/models/users.model.js";
+import PostModel from "../src/models/posts.model.js";
 dotenv.config();
 //sequelize connection setup for mariadb
 const sequelize = new Sequelize(
@@ -20,14 +22,21 @@ const sequelize = new Sequelize(
     },
   }
 );
-// Sequelize Sync
-sequelize
-  .sync({ force: true })
-  .then(() => {
-    console.log(`Database & tables created!`);
-  })
-  .catch((error) => {
-    console.log("Error is................", error);
-  });
-//Export sequelize connection
+//Load Models
+UserModel.init(sequelize);
+PostModel.init(sequelize);
+
+// Load all models
+await fs.readdirAsync("./src/models").map((fileName) => {
+  // ?? With ES6 should I System.import('./models/' + fileName)?
+  let model = require("./models/" + fileName);
+  /* NEW es6 style...? */
+  model.init(sequelize);
+});
+
+// associate
+// const models = sequelize.models;
+// _.map(Object.keys(models), (n) => models[n])
+//   .filter((m) => m.associate !== undefined)
+//   .forEach((m) => m.associate(models));
 export default sequelize;
