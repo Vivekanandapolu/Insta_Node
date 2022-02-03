@@ -34,7 +34,7 @@ export default class PostModel extends Model {
       }
     );
   }
-  static associations() {
+  static associate(models) {
     this.belongsTo(UserModel, { foreignKey: "user_id" });
   }
 }

@@ -43,7 +43,7 @@ export default class UserModel extends Model {
     );
   }
   //Relations
-  static associations() {
+  static associate(models) {
     this.hasMany(PostModel);
   }
   //Custom DAO logics
